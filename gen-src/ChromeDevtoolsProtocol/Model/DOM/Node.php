@@ -187,7 +187,7 @@ final class Node implements \JsonSerializable
 	public $pseudoElements;
 
 	/**
-	 * Import document for the HTMLImport links.
+	 * Deprecated, as the HTML Imports API has been removed (crbug.com/937746). This property used to return the imported document for the HTMLImport links. The property is always undefined now.
 	 *
 	 * @var Node|null
 	 */
@@ -206,6 +206,9 @@ final class Node implements \JsonSerializable
 	 * @var bool|null
 	 */
 	public $isSVG;
+
+	/** @var string */
+	public $compatibilityMode;
 
 
 	public static function fromJson($data)
@@ -309,6 +312,9 @@ final class Node implements \JsonSerializable
 		}
 		if (isset($data->isSVG)) {
 			$instance->isSVG = (bool)$data->isSVG;
+		}
+		if (isset($data->compatibilityMode)) {
+			$instance->compatibilityMode = (string)$data->compatibilityMode;
 		}
 		return $instance;
 	}
@@ -415,6 +421,9 @@ final class Node implements \JsonSerializable
 		}
 		if ($this->isSVG !== null) {
 			$data->isSVG = $this->isSVG;
+		}
+		if ($this->compatibilityMode !== null) {
+			$data->compatibilityMode = $this->compatibilityMode;
 		}
 		return $data;
 	}

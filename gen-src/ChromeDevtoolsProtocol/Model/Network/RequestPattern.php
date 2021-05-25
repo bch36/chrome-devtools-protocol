@@ -12,7 +12,7 @@ namespace ChromeDevtoolsProtocol\Model\Network;
 final class RequestPattern implements \JsonSerializable
 {
 	/**
-	 * Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. Omitting is equivalent to "*".
+	 * Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is backslash. Omitting is equivalent to `"*"`.
 	 *
 	 * @var string|null
 	 */
@@ -26,7 +26,7 @@ final class RequestPattern implements \JsonSerializable
 	public $resourceType;
 
 	/**
-	 * Stage at wich to begin intercepting requests. Default is Request.
+	 * Stage at which to begin intercepting requests. Default is Request.
 	 *
 	 * @var string
 	 */

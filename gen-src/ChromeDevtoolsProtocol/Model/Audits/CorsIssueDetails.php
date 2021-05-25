@@ -23,6 +23,12 @@ final class CorsIssueDetails implements \JsonSerializable
 	/** @var AffectedRequest */
 	public $request;
 
+	/** @var SourceCodeLocation|null */
+	public $location;
+
+	/** @var string|null */
+	public $initiatorOrigin;
+
 	/** @var string */
 	public $resourceIPAddressSpace;
 
@@ -41,6 +47,12 @@ final class CorsIssueDetails implements \JsonSerializable
 		}
 		if (isset($data->request)) {
 			$instance->request = AffectedRequest::fromJson($data->request);
+		}
+		if (isset($data->location)) {
+			$instance->location = SourceCodeLocation::fromJson($data->location);
+		}
+		if (isset($data->initiatorOrigin)) {
+			$instance->initiatorOrigin = (string)$data->initiatorOrigin;
 		}
 		if (isset($data->resourceIPAddressSpace)) {
 			$instance->resourceIPAddressSpace = (string)$data->resourceIPAddressSpace;
@@ -63,6 +75,12 @@ final class CorsIssueDetails implements \JsonSerializable
 		}
 		if ($this->request !== null) {
 			$data->request = $this->request->jsonSerialize();
+		}
+		if ($this->location !== null) {
+			$data->location = $this->location->jsonSerialize();
+		}
+		if ($this->initiatorOrigin !== null) {
+			$data->initiatorOrigin = $this->initiatorOrigin;
 		}
 		if ($this->resourceIPAddressSpace !== null) {
 			$data->resourceIPAddressSpace = $this->resourceIPAddressSpace;

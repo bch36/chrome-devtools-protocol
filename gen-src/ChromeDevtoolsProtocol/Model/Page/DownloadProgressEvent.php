@@ -3,7 +3,7 @@
 namespace ChromeDevtoolsProtocol\Model\Page;
 
 /**
- * Fired when download makes progress. Last call has |done| == true.
+ * Fired when download makes progress. Last call has |done| == true. Deprecated. Use Browser.downloadProgress instead.
  *
  * @generated This file has been auto-generated, do not edit.
  *

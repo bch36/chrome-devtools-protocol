@@ -38,6 +38,15 @@ final class InspectorIssueDetails implements \JsonSerializable
 	/** @var CorsIssueDetails|null */
 	public $corsIssueDetails;
 
+	/** @var AttributionReportingIssueDetails|null */
+	public $attributionReportingIssueDetails;
+
+	/** @var QuirksModeIssueDetails|null */
+	public $quirksModeIssueDetails;
+
+	/** @var NavigatorUserAgentIssueDetails|null */
+	public $navigatorUserAgentIssueDetails;
+
 
 	public static function fromJson($data)
 	{
@@ -68,6 +77,15 @@ final class InspectorIssueDetails implements \JsonSerializable
 		}
 		if (isset($data->corsIssueDetails)) {
 			$instance->corsIssueDetails = CorsIssueDetails::fromJson($data->corsIssueDetails);
+		}
+		if (isset($data->attributionReportingIssueDetails)) {
+			$instance->attributionReportingIssueDetails = AttributionReportingIssueDetails::fromJson($data->attributionReportingIssueDetails);
+		}
+		if (isset($data->quirksModeIssueDetails)) {
+			$instance->quirksModeIssueDetails = QuirksModeIssueDetails::fromJson($data->quirksModeIssueDetails);
+		}
+		if (isset($data->navigatorUserAgentIssueDetails)) {
+			$instance->navigatorUserAgentIssueDetails = NavigatorUserAgentIssueDetails::fromJson($data->navigatorUserAgentIssueDetails);
 		}
 		return $instance;
 	}
@@ -102,6 +120,15 @@ final class InspectorIssueDetails implements \JsonSerializable
 		}
 		if ($this->corsIssueDetails !== null) {
 			$data->corsIssueDetails = $this->corsIssueDetails->jsonSerialize();
+		}
+		if ($this->attributionReportingIssueDetails !== null) {
+			$data->attributionReportingIssueDetails = $this->attributionReportingIssueDetails->jsonSerialize();
+		}
+		if ($this->quirksModeIssueDetails !== null) {
+			$data->quirksModeIssueDetails = $this->quirksModeIssueDetails->jsonSerialize();
+		}
+		if ($this->navigatorUserAgentIssueDetails !== null) {
+			$data->navigatorUserAgentIssueDetails = $this->navigatorUserAgentIssueDetails->jsonSerialize();
 		}
 		return $data;
 	}

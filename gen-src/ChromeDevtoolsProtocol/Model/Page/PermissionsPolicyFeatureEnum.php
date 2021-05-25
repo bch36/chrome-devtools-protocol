@@ -3,7 +3,7 @@
 namespace ChromeDevtoolsProtocol\Model\Page;
 
 /**
- * All Permissions Policy features. This enum should match the one defined in renderer/core/feature_policy/feature_policy_features.json5.
+ * All Permissions Policy features. This enum should match the one defined in third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5.
  *
  * @generated This file has been auto-generated, do not edit.
  *
@@ -13,6 +13,7 @@ final class PermissionsPolicyFeatureEnum
 {
 	const ACCELEROMETER = 'accelerometer';
 	const AMBIENT_LIGHT_SENSOR = 'ambient-light-sensor';
+	const ATTRIBUTION_REPORTING = 'attribution-reporting';
 	const AUTOPLAY = 'autoplay';
 	const CAMERA = 'camera';
 	const CH_DPR = 'ch-dpr';
@@ -20,6 +21,7 @@ final class PermissionsPolicyFeatureEnum
 	const CH_DOWNLINK = 'ch-downlink';
 	const CH_ECT = 'ch-ect';
 	const CH_LANG = 'ch-lang';
+	const CH_PREFERS_COLOR_SCHEME = 'ch-prefers-color-scheme';
 	const CH_RTT = 'ch-rtt';
 	const CH_UA = 'ch-ua';
 	const CH_UA_ARCH = 'ch-ua-arch';
@@ -32,8 +34,8 @@ final class PermissionsPolicyFeatureEnum
 	const CH_WIDTH = 'ch-width';
 	const CLIPBOARD_READ = 'clipboard-read';
 	const CLIPBOARD_WRITE = 'clipboard-write';
-	const CONVERSION_MEASUREMENT = 'conversion-measurement';
 	const CROSS_ORIGIN_ISOLATED = 'cross-origin-isolated';
+	const DIRECT_SOCKETS = 'direct-sockets';
 	const DISPLAY_CAPTURE = 'display-capture';
 	const DOCUMENT_DOMAIN = 'document-domain';
 	const ENCRYPTED_MEDIA = 'encrypted-media';
@@ -57,11 +59,13 @@ final class PermissionsPolicyFeatureEnum
 	const PUBLICKEY_CREDENTIALS_GET = 'publickey-credentials-get';
 	const SCREEN_WAKE_LOCK = 'screen-wake-lock';
 	const SERIAL = 'serial';
+	const SHARED_AUTOFILL = 'shared-autofill';
 	const STORAGE_ACCESS_API = 'storage-access-api';
 	const SYNC_XHR = 'sync-xhr';
 	const TRUST_TOKEN_REDEMPTION = 'trust-token-redemption';
 	const USB = 'usb';
 	const VERTICAL_SCROLL = 'vertical-scroll';
 	const WEB_SHARE = 'web-share';
+	const WINDOW_PLACEMENT = 'window-placement';
 	const XR_SPATIAL_TRACKING = 'xr-spatial-tracking';
 }

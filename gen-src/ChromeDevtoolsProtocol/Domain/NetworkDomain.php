@@ -40,6 +40,7 @@ use ChromeDevtoolsProtocol\Model\Network\ResponseReceivedEvent;
 use ChromeDevtoolsProtocol\Model\Network\ResponseReceivedExtraInfoEvent;
 use ChromeDevtoolsProtocol\Model\Network\SearchInResponseBodyRequest;
 use ChromeDevtoolsProtocol\Model\Network\SearchInResponseBodyResponse;
+use ChromeDevtoolsProtocol\Model\Network\SetAcceptedEncodingsRequest;
 use ChromeDevtoolsProtocol\Model\Network\SetAttachDebugStackRequest;
 use ChromeDevtoolsProtocol\Model\Network\SetBlockedURLsRequest;
 use ChromeDevtoolsProtocol\Model\Network\SetBypassServiceWorkerRequest;
@@ -52,6 +53,10 @@ use ChromeDevtoolsProtocol\Model\Network\SetExtraHTTPHeadersRequest;
 use ChromeDevtoolsProtocol\Model\Network\SetRequestInterceptionRequest;
 use ChromeDevtoolsProtocol\Model\Network\SetUserAgentOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Network\SignedExchangeReceivedEvent;
+use ChromeDevtoolsProtocol\Model\Network\SubresourceWebBundleInnerResponseErrorEvent;
+use ChromeDevtoolsProtocol\Model\Network\SubresourceWebBundleInnerResponseParsedEvent;
+use ChromeDevtoolsProtocol\Model\Network\SubresourceWebBundleMetadataErrorEvent;
+use ChromeDevtoolsProtocol\Model\Network\SubresourceWebBundleMetadataReceivedEvent;
 use ChromeDevtoolsProtocol\Model\Network\TakeResponseBodyForInterceptionAsStreamRequest;
 use ChromeDevtoolsProtocol\Model\Network\TakeResponseBodyForInterceptionAsStreamResponse;
 use ChromeDevtoolsProtocol\Model\Network\TrustTokenOperationDoneEvent;
@@ -100,6 +105,13 @@ class NetworkDomain implements NetworkDomainInterface
 		$request = new \stdClass();
 		$response = $this->internalClient->executeCommand($ctx, 'Network.canEmulateNetworkConditions', $request);
 		return CanEmulateNetworkConditionsResponse::fromJson($response);
+	}
+
+
+	public function clearAcceptedEncodingsOverride(ContextInterface $ctx): void
+	{
+		$request = new \stdClass();
+		$this->internalClient->executeCommand($ctx, 'Network.clearAcceptedEncodingsOverride', $request);
 	}
 
 
@@ -225,6 +237,12 @@ class NetworkDomain implements NetworkDomainInterface
 	): SearchInResponseBodyResponse {
 		$response = $this->internalClient->executeCommand($ctx, 'Network.searchInResponseBody', $request);
 		return SearchInResponseBodyResponse::fromJson($response);
+	}
+
+
+	public function setAcceptedEncodings(ContextInterface $ctx, SetAcceptedEncodingsRequest $request): void
+	{
+		$this->internalClient->executeCommand($ctx, 'Network.setAcceptedEncodings', $request);
 	}
 
 
@@ -463,6 +481,62 @@ class NetworkDomain implements NetworkDomainInterface
 	public function awaitSignedExchangeReceived(ContextInterface $ctx): SignedExchangeReceivedEvent
 	{
 		return SignedExchangeReceivedEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Network.signedExchangeReceived'));
+	}
+
+
+	public function addSubresourceWebBundleInnerResponseErrorListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('Network.subresourceWebBundleInnerResponseError', function ($event) use ($listener) {
+			return $listener(SubresourceWebBundleInnerResponseErrorEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitSubresourceWebBundleInnerResponseError(ContextInterface $ctx): SubresourceWebBundleInnerResponseErrorEvent
+	{
+		return SubresourceWebBundleInnerResponseErrorEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Network.subresourceWebBundleInnerResponseError'));
+	}
+
+
+	public function addSubresourceWebBundleInnerResponseParsedListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('Network.subresourceWebBundleInnerResponseParsed', function ($event) use ($listener) {
+			return $listener(SubresourceWebBundleInnerResponseParsedEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitSubresourceWebBundleInnerResponseParsed(ContextInterface $ctx): SubresourceWebBundleInnerResponseParsedEvent
+	{
+		return SubresourceWebBundleInnerResponseParsedEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Network.subresourceWebBundleInnerResponseParsed'));
+	}
+
+
+	public function addSubresourceWebBundleMetadataErrorListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('Network.subresourceWebBundleMetadataError', function ($event) use ($listener) {
+			return $listener(SubresourceWebBundleMetadataErrorEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitSubresourceWebBundleMetadataError(ContextInterface $ctx): SubresourceWebBundleMetadataErrorEvent
+	{
+		return SubresourceWebBundleMetadataErrorEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Network.subresourceWebBundleMetadataError'));
+	}
+
+
+	public function addSubresourceWebBundleMetadataReceivedListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('Network.subresourceWebBundleMetadataReceived', function ($event) use ($listener) {
+			return $listener(SubresourceWebBundleMetadataReceivedEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitSubresourceWebBundleMetadataReceived(ContextInterface $ctx): SubresourceWebBundleMetadataReceivedEvent
+	{
+		return SubresourceWebBundleMetadataReceivedEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Network.subresourceWebBundleMetadataReceived'));
 	}
 
 

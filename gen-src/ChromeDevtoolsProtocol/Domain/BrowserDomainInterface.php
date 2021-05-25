@@ -3,6 +3,9 @@
 namespace ChromeDevtoolsProtocol\Domain;
 
 use ChromeDevtoolsProtocol\ContextInterface;
+use ChromeDevtoolsProtocol\Model\Browser\CancelDownloadRequest;
+use ChromeDevtoolsProtocol\Model\Browser\DownloadProgressEvent;
+use ChromeDevtoolsProtocol\Model\Browser\DownloadWillBeginEvent;
 use ChromeDevtoolsProtocol\Model\Browser\ExecuteBrowserCommandRequest;
 use ChromeDevtoolsProtocol\Model\Browser\GetBrowserCommandLineResponse;
 use ChromeDevtoolsProtocol\Model\Browser\GetHistogramRequest;
@@ -20,6 +23,7 @@ use ChromeDevtoolsProtocol\Model\Browser\SetDockTileRequest;
 use ChromeDevtoolsProtocol\Model\Browser\SetDownloadBehaviorRequest;
 use ChromeDevtoolsProtocol\Model\Browser\SetPermissionRequest;
 use ChromeDevtoolsProtocol\Model\Browser\SetWindowBoundsRequest;
+use ChromeDevtoolsProtocol\SubscriptionInterface;
 
 /**
  * The Browser domain defines methods and events for browser managing.
@@ -30,6 +34,17 @@ use ChromeDevtoolsProtocol\Model\Browser\SetWindowBoundsRequest;
  */
 interface BrowserDomainInterface
 {
+	/**
+	 * Cancel a download if in progress
+	 *
+	 * @param ContextInterface $ctx
+	 * @param CancelDownloadRequest $request
+	 *
+	 * @return void
+	 */
+	public function cancelDownload(ContextInterface $ctx, CancelDownloadRequest $request): void;
+
+
 	/**
 	 * Close browser gracefully.
 	 *
@@ -202,4 +217,52 @@ interface BrowserDomainInterface
 	 * @return void
 	 */
 	public function setWindowBounds(ContextInterface $ctx, SetWindowBoundsRequest $request): void;
+
+
+	/**
+	 * Fired when download makes progress. Last call has |done| == true.
+	 *
+	 * Listener will be called whenever event Browser.downloadProgress is fired.
+	 *
+	 * @param callable $listener
+	 *
+	 * @return SubscriptionInterface
+	 */
+	public function addDownloadProgressListener(callable $listener): SubscriptionInterface;
+
+
+	/**
+	 * Fired when download makes progress. Last call has |done| == true.
+	 *
+	 * Method will block until first Browser.downloadProgress event is fired.
+	 *
+	 * @param ContextInterface $ctx
+	 *
+	 * @return DownloadProgressEvent
+	 */
+	public function awaitDownloadProgress(ContextInterface $ctx): DownloadProgressEvent;
+
+
+	/**
+	 * Fired when page is about to start a download.
+	 *
+	 * Listener will be called whenever event Browser.downloadWillBegin is fired.
+	 *
+	 * @param callable $listener
+	 *
+	 * @return SubscriptionInterface
+	 */
+	public function addDownloadWillBeginListener(callable $listener): SubscriptionInterface;
+
+
+	/**
+	 * Fired when page is about to start a download.
+	 *
+	 * Method will block until first Browser.downloadWillBegin event is fired.
+	 *
+	 * @param ContextInterface $ctx
+	 *
+	 * @return DownloadWillBeginEvent
+	 */
+	public function awaitDownloadWillBegin(ContextInterface $ctx): DownloadWillBeginEvent;
 }

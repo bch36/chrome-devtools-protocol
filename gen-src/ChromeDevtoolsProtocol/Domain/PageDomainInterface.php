@@ -8,6 +8,7 @@ use ChromeDevtoolsProtocol\Model\Page\AddScriptToEvaluateOnLoadRequest;
 use ChromeDevtoolsProtocol\Model\Page\AddScriptToEvaluateOnLoadResponse;
 use ChromeDevtoolsProtocol\Model\Page\AddScriptToEvaluateOnNewDocumentRequest;
 use ChromeDevtoolsProtocol\Model\Page\AddScriptToEvaluateOnNewDocumentResponse;
+use ChromeDevtoolsProtocol\Model\Page\BackForwardCacheNotUsedEvent;
 use ChromeDevtoolsProtocol\Model\Page\CaptureScreenshotRequest;
 use ChromeDevtoolsProtocol\Model\Page\CaptureScreenshotResponse;
 use ChromeDevtoolsProtocol\Model\Page\CaptureSnapshotRequest;
@@ -174,7 +175,7 @@ interface PageDomainInterface
 
 
 	/**
-	 * Clears the overriden device metrics.
+	 * Clears the overridden device metrics.
 	 *
 	 * @param ContextInterface $ctx
 	 *
@@ -194,7 +195,7 @@ interface PageDomainInterface
 
 
 	/**
-	 * Clears the overriden Geolocation Position and Error.
+	 * Clears the overridden Geolocation Position and Error.
 	 *
 	 * @param ContextInterface $ctx
 	 *
@@ -709,6 +710,30 @@ interface PageDomainInterface
 
 
 	/**
+	 * Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do not assume any ordering with the Page.frameNavigated event. This event is fired only for main-frame history navigation where the document changes (non-same-document navigations), when bfcache navigation fails.
+	 *
+	 * Listener will be called whenever event Page.backForwardCacheNotUsed is fired.
+	 *
+	 * @param callable $listener
+	 *
+	 * @return SubscriptionInterface
+	 */
+	public function addBackForwardCacheNotUsedListener(callable $listener): SubscriptionInterface;
+
+
+	/**
+	 * Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do not assume any ordering with the Page.frameNavigated event. This event is fired only for main-frame history navigation where the document changes (non-same-document navigations), when bfcache navigation fails.
+	 *
+	 * Method will block until first Page.backForwardCacheNotUsed event is fired.
+	 *
+	 * @param ContextInterface $ctx
+	 *
+	 * @return BackForwardCacheNotUsedEvent
+	 */
+	public function awaitBackForwardCacheNotUsed(ContextInterface $ctx): BackForwardCacheNotUsedEvent;
+
+
+	/**
 	 * Issued for every compilation cache generated. Is only available if Page.setGenerateCompilationCache is enabled.
 	 *
 	 * Listener will be called whenever event Page.compilationCacheProduced is fired.
@@ -781,7 +806,7 @@ interface PageDomainInterface
 
 
 	/**
-	 * Fired when download makes progress. Last call has |done| == true.
+	 * Fired when download makes progress. Last call has |done| == true. Deprecated. Use Browser.downloadProgress instead.
 	 *
 	 * Listener will be called whenever event Page.downloadProgress is fired.
 	 *
@@ -793,7 +818,7 @@ interface PageDomainInterface
 
 
 	/**
-	 * Fired when download makes progress. Last call has |done| == true.
+	 * Fired when download makes progress. Last call has |done| == true. Deprecated. Use Browser.downloadProgress instead.
 	 *
 	 * Method will block until first Page.downloadProgress event is fired.
 	 *
@@ -805,7 +830,7 @@ interface PageDomainInterface
 
 
 	/**
-	 * Fired when page is about to start a download.
+	 * Fired when page is about to start a download. Deprecated. Use Browser.downloadWillBegin instead.
 	 *
 	 * Listener will be called whenever event Page.downloadWillBegin is fired.
 	 *
@@ -817,7 +842,7 @@ interface PageDomainInterface
 
 
 	/**
-	 * Fired when page is about to start a download.
+	 * Fired when page is about to start a download. Deprecated. Use Browser.downloadWillBegin instead.
 	 *
 	 * Method will block until first Page.downloadWillBegin event is fired.
 	 *
