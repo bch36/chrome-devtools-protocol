@@ -49,6 +49,8 @@ class ProcessInstance implements InstanceInterface, CloseableResourceInterface
 		$this->process->stop();
 		$this->process = null;
 
+		sleep(5); // Wait until everything has shut down before removing temporary user data directory
+
 		if ($this->temporaryUserDataDir !== null) {
 			(new Filesystem())->remove($this->temporaryUserDataDir);
 		}
