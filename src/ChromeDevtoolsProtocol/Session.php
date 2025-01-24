@@ -53,19 +53,26 @@ class Session implements DevtoolsClientInterface, InternalClientInterface
 	public function close(): void
 	{
 		$ctx = Context::withTimeout(Context::background(), 10);
-		$this->browser->target()->closeTarget(
-			$ctx,
-			CloseTargetRequest::builder()
-				->setTargetId($this->targetId)
-				->build()
-		);
-		$this->browser->target()->disposeBrowserContext(
-			$ctx,
-			DisposeBrowserContextRequest::builder()
-				->setBrowserContextId($this->browserContextId)
-				->build()
-		);
-		$this->browser->close();
+
+		try
+		{
+			$this->browser->target()->closeTarget(
+				$ctx,
+				CloseTargetRequest::builder()
+					->setTargetId($this->targetId)
+					->build()
+			);
+			$this->browser->target()->disposeBrowserContext(
+				$ctx,
+				DisposeBrowserContextRequest::builder()
+					->setBrowserContextId($this->browserContextId)
+					->build()
+			);
+		} catch (\Exception $e) {
+			$this->browser->close();
+
+			throw $e;
+		}
 	}
 
 	/**
