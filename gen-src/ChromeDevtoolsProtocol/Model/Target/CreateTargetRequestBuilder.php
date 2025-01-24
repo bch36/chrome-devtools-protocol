@@ -12,8 +12,11 @@ use ChromeDevtoolsProtocol\Exception\BuilderException;
 final class CreateTargetRequestBuilder
 {
 	private $url;
+	private $left;
+	private $top;
 	private $width;
 	private $height;
+	private $windowState;
 	private $browserContextId;
 	private $enableBeginFrameControl;
 	private $newWindow;
@@ -31,8 +34,11 @@ final class CreateTargetRequestBuilder
 			throw new BuilderException('Property [url] is required.');
 		}
 		$instance->url = $this->url;
+		$instance->left = $this->left;
+		$instance->top = $this->top;
 		$instance->width = $this->width;
 		$instance->height = $this->height;
+		$instance->windowState = $this->windowState;
 		$instance->browserContextId = $this->browserContextId;
 		$instance->enableBeginFrameControl = $this->enableBeginFrameControl;
 		$instance->newWindow = $this->newWindow;
@@ -50,6 +56,30 @@ final class CreateTargetRequestBuilder
 	public function setUrl($url): self
 	{
 		$this->url = $url;
+		return $this;
+	}
+
+
+	/**
+	 * @param int|null $left
+	 *
+	 * @return self
+	 */
+	public function setLeft($left): self
+	{
+		$this->left = $left;
+		return $this;
+	}
+
+
+	/**
+	 * @param int|null $top
+	 *
+	 * @return self
+	 */
+	public function setTop($top): self
+	{
+		$this->top = $top;
 		return $this;
 	}
 
@@ -74,6 +104,18 @@ final class CreateTargetRequestBuilder
 	public function setHeight($height): self
 	{
 		$this->height = $height;
+		return $this;
+	}
+
+
+	/**
+	 * @param string $windowState
+	 *
+	 * @return self
+	 */
+	public function setWindowState($windowState): self
+	{
+		$this->windowState = $windowState;
 		return $this;
 	}
 

@@ -7,10 +7,14 @@ use ChromeDevtoolsProtocol\Model\CSS\AddRuleRequest;
 use ChromeDevtoolsProtocol\Model\CSS\AddRuleResponse;
 use ChromeDevtoolsProtocol\Model\CSS\CollectClassNamesRequest;
 use ChromeDevtoolsProtocol\Model\CSS\CollectClassNamesResponse;
+use ChromeDevtoolsProtocol\Model\CSS\ComputedStyleUpdatedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\CreateStyleSheetRequest;
 use ChromeDevtoolsProtocol\Model\CSS\CreateStyleSheetResponse;
 use ChromeDevtoolsProtocol\Model\CSS\FontsUpdatedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\ForcePseudoStateRequest;
+use ChromeDevtoolsProtocol\Model\CSS\ForceStartingStyleRequest;
+use ChromeDevtoolsProtocol\Model\CSS\GetAnimatedStylesForNodeRequest;
+use ChromeDevtoolsProtocol\Model\CSS\GetAnimatedStylesForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetBackgroundColorsRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetBackgroundColorsResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetComputedStyleForNodeRequest;
@@ -21,6 +25,8 @@ use ChromeDevtoolsProtocol\Model\CSS\GetLayersForNodeRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetLayersForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetLocationForSelectorRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetLocationForSelectorResponse;
+use ChromeDevtoolsProtocol\Model\CSS\GetLonghandPropertiesRequest;
+use ChromeDevtoolsProtocol\Model\CSS\GetLonghandPropertiesResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetMatchedStylesForNodeRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetMatchedStylesForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetMediaQueriesResponse;
@@ -29,6 +35,8 @@ use ChromeDevtoolsProtocol\Model\CSS\GetPlatformFontsForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetStyleSheetTextRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetStyleSheetTextResponse;
 use ChromeDevtoolsProtocol\Model\CSS\MediaQueryResultChangedEvent;
+use ChromeDevtoolsProtocol\Model\CSS\ResolveValuesRequest;
+use ChromeDevtoolsProtocol\Model\CSS\ResolveValuesResponse;
 use ChromeDevtoolsProtocol\Model\CSS\SetContainerQueryTextRequest;
 use ChromeDevtoolsProtocol\Model\CSS\SetContainerQueryTextResponse;
 use ChromeDevtoolsProtocol\Model\CSS\SetEffectivePropertyValueForNodeRequest;
@@ -55,6 +63,7 @@ use ChromeDevtoolsProtocol\Model\CSS\StyleSheetChangedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\StyleSheetRemovedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\TakeComputedStyleUpdatesResponse;
 use ChromeDevtoolsProtocol\Model\CSS\TakeCoverageDeltaResponse;
+use ChromeDevtoolsProtocol\Model\CSS\TrackComputedStyleUpdatesForNodeRequest;
 use ChromeDevtoolsProtocol\Model\CSS\TrackComputedStyleUpdatesRequest;
 use ChromeDevtoolsProtocol\SubscriptionInterface;
 
@@ -134,6 +143,31 @@ interface CSSDomainInterface
 
 
 	/**
+	 * Ensures that the given node is in its starting-style state.
+	 *
+	 * @param ContextInterface $ctx
+	 * @param ForceStartingStyleRequest $request
+	 *
+	 * @return void
+	 */
+	public function forceStartingStyle(ContextInterface $ctx, ForceStartingStyleRequest $request): void;
+
+
+	/**
+	 * Returns the styles coming from animations & transitions including the animation & transition styles coming from inheritance chain.
+	 *
+	 * @param ContextInterface $ctx
+	 * @param GetAnimatedStylesForNodeRequest $request
+	 *
+	 * @return GetAnimatedStylesForNodeResponse
+	 */
+	public function getAnimatedStylesForNode(
+		ContextInterface $ctx,
+		GetAnimatedStylesForNodeRequest $request
+	): GetAnimatedStylesForNodeResponse;
+
+
+	/**
 	 * Call CSS.getBackgroundColors command.
 	 *
 	 * @param ContextInterface $ctx
@@ -201,6 +235,20 @@ interface CSSDomainInterface
 
 
 	/**
+	 * Call CSS.getLonghandProperties command.
+	 *
+	 * @param ContextInterface $ctx
+	 * @param GetLonghandPropertiesRequest $request
+	 *
+	 * @return GetLonghandPropertiesResponse
+	 */
+	public function getLonghandProperties(
+		ContextInterface $ctx,
+		GetLonghandPropertiesRequest $request
+	): GetLonghandPropertiesResponse;
+
+
+	/**
 	 * Returns requested styles for a DOM node identified by `nodeId`.
 	 *
 	 * @param ContextInterface $ctx
@@ -247,6 +295,17 @@ interface CSSDomainInterface
 	 * @return GetStyleSheetTextResponse
 	 */
 	public function getStyleSheetText(ContextInterface $ctx, GetStyleSheetTextRequest $request): GetStyleSheetTextResponse;
+
+
+	/**
+	 * Resolve the specified values in the context of the provided element. For example, a value of '1em' is evaluated according to the computed 'font-size' of the element and a value 'calc(1px + 2px)' will be resolved to '3px'.
+	 *
+	 * @param ContextInterface $ctx
+	 * @param ResolveValuesRequest $request
+	 *
+	 * @return ResolveValuesResponse
+	 */
+	public function resolveValues(ContextInterface $ctx, ResolveValuesRequest $request): ResolveValuesResponse;
 
 
 	/**
@@ -428,6 +487,44 @@ interface CSSDomainInterface
 	 * @return void
 	 */
 	public function trackComputedStyleUpdates(ContextInterface $ctx, TrackComputedStyleUpdatesRequest $request): void;
+
+
+	/**
+	 * Starts tracking the given node for the computed style updates and whenever the computed style is updated for node, it queues a `computedStyleUpdated` event with throttling. There can only be 1 node tracked for computed style updates so passing a new node id removes tracking from the previous node. Pass `undefined` to disable tracking.
+	 *
+	 * @param ContextInterface $ctx
+	 * @param TrackComputedStyleUpdatesForNodeRequest $request
+	 *
+	 * @return void
+	 */
+	public function trackComputedStyleUpdatesForNode(
+		ContextInterface $ctx,
+		TrackComputedStyleUpdatesForNodeRequest $request
+	): void;
+
+
+	/**
+	 * Subscribe to CSS.computedStyleUpdated event.
+	 *
+	 * Listener will be called whenever event CSS.computedStyleUpdated is fired.
+	 *
+	 * @param callable $listener
+	 *
+	 * @return SubscriptionInterface
+	 */
+	public function addComputedStyleUpdatedListener(callable $listener): SubscriptionInterface;
+
+
+	/**
+	 * Wait for CSS.computedStyleUpdated event.
+	 *
+	 * Method will block until first CSS.computedStyleUpdated event is fired.
+	 *
+	 * @param ContextInterface $ctx
+	 *
+	 * @return ComputedStyleUpdatedEvent
+	 */
+	public function awaitComputedStyleUpdated(ContextInterface $ctx): ComputedStyleUpdatedEvent;
 
 
 	/**

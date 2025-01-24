@@ -8,10 +8,14 @@ use ChromeDevtoolsProtocol\Model\CSS\AddRuleRequest;
 use ChromeDevtoolsProtocol\Model\CSS\AddRuleResponse;
 use ChromeDevtoolsProtocol\Model\CSS\CollectClassNamesRequest;
 use ChromeDevtoolsProtocol\Model\CSS\CollectClassNamesResponse;
+use ChromeDevtoolsProtocol\Model\CSS\ComputedStyleUpdatedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\CreateStyleSheetRequest;
 use ChromeDevtoolsProtocol\Model\CSS\CreateStyleSheetResponse;
 use ChromeDevtoolsProtocol\Model\CSS\FontsUpdatedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\ForcePseudoStateRequest;
+use ChromeDevtoolsProtocol\Model\CSS\ForceStartingStyleRequest;
+use ChromeDevtoolsProtocol\Model\CSS\GetAnimatedStylesForNodeRequest;
+use ChromeDevtoolsProtocol\Model\CSS\GetAnimatedStylesForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetBackgroundColorsRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetBackgroundColorsResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetComputedStyleForNodeRequest;
@@ -22,6 +26,8 @@ use ChromeDevtoolsProtocol\Model\CSS\GetLayersForNodeRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetLayersForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetLocationForSelectorRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetLocationForSelectorResponse;
+use ChromeDevtoolsProtocol\Model\CSS\GetLonghandPropertiesRequest;
+use ChromeDevtoolsProtocol\Model\CSS\GetLonghandPropertiesResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetMatchedStylesForNodeRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetMatchedStylesForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetMediaQueriesResponse;
@@ -30,6 +36,8 @@ use ChromeDevtoolsProtocol\Model\CSS\GetPlatformFontsForNodeResponse;
 use ChromeDevtoolsProtocol\Model\CSS\GetStyleSheetTextRequest;
 use ChromeDevtoolsProtocol\Model\CSS\GetStyleSheetTextResponse;
 use ChromeDevtoolsProtocol\Model\CSS\MediaQueryResultChangedEvent;
+use ChromeDevtoolsProtocol\Model\CSS\ResolveValuesRequest;
+use ChromeDevtoolsProtocol\Model\CSS\ResolveValuesResponse;
 use ChromeDevtoolsProtocol\Model\CSS\SetContainerQueryTextRequest;
 use ChromeDevtoolsProtocol\Model\CSS\SetContainerQueryTextResponse;
 use ChromeDevtoolsProtocol\Model\CSS\SetEffectivePropertyValueForNodeRequest;
@@ -56,6 +64,7 @@ use ChromeDevtoolsProtocol\Model\CSS\StyleSheetChangedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\StyleSheetRemovedEvent;
 use ChromeDevtoolsProtocol\Model\CSS\TakeComputedStyleUpdatesResponse;
 use ChromeDevtoolsProtocol\Model\CSS\TakeCoverageDeltaResponse;
+use ChromeDevtoolsProtocol\Model\CSS\TrackComputedStyleUpdatesForNodeRequest;
 use ChromeDevtoolsProtocol\Model\CSS\TrackComputedStyleUpdatesRequest;
 use ChromeDevtoolsProtocol\SubscriptionInterface;
 
@@ -112,6 +121,21 @@ class CSSDomain implements CSSDomainInterface
 	}
 
 
+	public function forceStartingStyle(ContextInterface $ctx, ForceStartingStyleRequest $request): void
+	{
+		$this->internalClient->executeCommand($ctx, 'CSS.forceStartingStyle', $request);
+	}
+
+
+	public function getAnimatedStylesForNode(
+		ContextInterface $ctx,
+		GetAnimatedStylesForNodeRequest $request
+	): GetAnimatedStylesForNodeResponse {
+		$response = $this->internalClient->executeCommand($ctx, 'CSS.getAnimatedStylesForNode', $request);
+		return GetAnimatedStylesForNodeResponse::fromJson($response);
+	}
+
+
 	public function getBackgroundColors(
 		ContextInterface $ctx,
 		GetBackgroundColorsRequest $request
@@ -155,6 +179,15 @@ class CSSDomain implements CSSDomainInterface
 	}
 
 
+	public function getLonghandProperties(
+		ContextInterface $ctx,
+		GetLonghandPropertiesRequest $request
+	): GetLonghandPropertiesResponse {
+		$response = $this->internalClient->executeCommand($ctx, 'CSS.getLonghandProperties', $request);
+		return GetLonghandPropertiesResponse::fromJson($response);
+	}
+
+
 	public function getMatchedStylesForNode(
 		ContextInterface $ctx,
 		GetMatchedStylesForNodeRequest $request
@@ -185,6 +218,13 @@ class CSSDomain implements CSSDomainInterface
 	{
 		$response = $this->internalClient->executeCommand($ctx, 'CSS.getStyleSheetText', $request);
 		return GetStyleSheetTextResponse::fromJson($response);
+	}
+
+
+	public function resolveValues(ContextInterface $ctx, ResolveValuesRequest $request): ResolveValuesResponse
+	{
+		$response = $this->internalClient->executeCommand($ctx, 'CSS.resolveValues', $request);
+		return ResolveValuesResponse::fromJson($response);
 	}
 
 
@@ -303,6 +343,28 @@ class CSSDomain implements CSSDomainInterface
 	public function trackComputedStyleUpdates(ContextInterface $ctx, TrackComputedStyleUpdatesRequest $request): void
 	{
 		$this->internalClient->executeCommand($ctx, 'CSS.trackComputedStyleUpdates', $request);
+	}
+
+
+	public function trackComputedStyleUpdatesForNode(
+		ContextInterface $ctx,
+		TrackComputedStyleUpdatesForNodeRequest $request
+	): void {
+		$this->internalClient->executeCommand($ctx, 'CSS.trackComputedStyleUpdatesForNode', $request);
+	}
+
+
+	public function addComputedStyleUpdatedListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('CSS.computedStyleUpdated', function ($event) use ($listener) {
+			return $listener(ComputedStyleUpdatedEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitComputedStyleUpdated(ContextInterface $ctx): ComputedStyleUpdatedEvent
+	{
+		return ComputedStyleUpdatedEvent::fromJson($this->internalClient->awaitEvent($ctx, 'CSS.computedStyleUpdated'));
 	}
 
 

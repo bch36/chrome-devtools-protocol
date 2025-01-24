@@ -32,6 +32,7 @@ final class PermissionsPolicyFeatureEnum
 	public const CH_UA = 'ch-ua';
 	public const CH_UA_ARCH = 'ch-ua-arch';
 	public const CH_UA_BITNESS = 'ch-ua-bitness';
+	public const CH_UA_HIGH_ENTROPY_VALUES = 'ch-ua-high-entropy-values';
 	public const CH_UA_PLATFORM = 'ch-ua-platform';
 	public const CH_UA_MODEL = 'ch-ua-model';
 	public const CH_UA_MOBILE = 'ch-ua-mobile';
@@ -49,6 +50,7 @@ final class PermissionsPolicyFeatureEnum
 	public const CONTROLLED_FRAME = 'controlled-frame';
 	public const CROSS_ORIGIN_ISOLATED = 'cross-origin-isolated';
 	public const DEFERRED_FETCH = 'deferred-fetch';
+	public const DEFERRED_FETCH_MINIMAL = 'deferred-fetch-minimal';
 	public const DIGITAL_CREDENTIALS_GET = 'digital-credentials-get';
 	public const DIRECT_SOCKETS = 'direct-sockets';
 	public const DIRECT_SOCKETS_PRIVATE = 'direct-sockets-private';
@@ -57,6 +59,7 @@ final class PermissionsPolicyFeatureEnum
 	public const ENCRYPTED_MEDIA = 'encrypted-media';
 	public const EXECUTION_WHILE_OUT_OF_VIEWPORT = 'execution-while-out-of-viewport';
 	public const EXECUTION_WHILE_NOT_RENDERED = 'execution-while-not-rendered';
+	public const FENCED_UNPARTITIONED_STORAGE_READ = 'fenced-unpartitioned-storage-read';
 	public const FOCUS_WITHOUT_USER_ACTIVATION = 'focus-without-user-activation';
 	public const FULLSCREEN = 'fullscreen';
 	public const FROBULATE = 'frobulate';

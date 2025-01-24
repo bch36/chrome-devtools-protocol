@@ -19,18 +19,39 @@ final class CreateTargetRequest implements \JsonSerializable
 	public $url;
 
 	/**
-	 * Frame width in DIP (headless chrome only).
+	 * Frame left origin in DIP (requires newWindow to be true or headless shell).
+	 *
+	 * @var int|null
+	 */
+	public $left;
+
+	/**
+	 * Frame top origin in DIP (requires newWindow to be true or headless shell).
+	 *
+	 * @var int|null
+	 */
+	public $top;
+
+	/**
+	 * Frame width in DIP (requires newWindow to be true or headless shell).
 	 *
 	 * @var int|null
 	 */
 	public $width;
 
 	/**
-	 * Frame height in DIP (headless chrome only).
+	 * Frame height in DIP (requires newWindow to be true or headless shell).
 	 *
 	 * @var int|null
 	 */
 	public $height;
+
+	/**
+	 * Frame window state (requires newWindow to be true or headless shell). Default is normal.
+	 *
+	 * @var string
+	 */
+	public $windowState;
 
 	/**
 	 * The browser context to create the page in.
@@ -40,21 +61,21 @@ final class CreateTargetRequest implements \JsonSerializable
 	public $browserContextId;
 
 	/**
-	 * Whether BeginFrames for this target will be controlled via DevTools (headless chrome only, not supported on MacOS yet, false by default).
+	 * Whether BeginFrames for this target will be controlled via DevTools (headless shell only, not supported on MacOS yet, false by default).
 	 *
 	 * @var bool|null
 	 */
 	public $enableBeginFrameControl;
 
 	/**
-	 * Whether to create a new Window or Tab (chrome-only, false by default).
+	 * Whether to create a new Window or Tab (false by default, not supported by headless shell).
 	 *
 	 * @var bool|null
 	 */
 	public $newWindow;
 
 	/**
-	 * Whether to create the target in background or foreground (chrome-only, false by default).
+	 * Whether to create the target in background or foreground (false by default, not supported by headless shell).
 	 *
 	 * @var bool|null
 	 */
@@ -78,11 +99,20 @@ final class CreateTargetRequest implements \JsonSerializable
 		if (isset($data->url)) {
 			$instance->url = (string)$data->url;
 		}
+		if (isset($data->left)) {
+			$instance->left = (int)$data->left;
+		}
+		if (isset($data->top)) {
+			$instance->top = (int)$data->top;
+		}
 		if (isset($data->width)) {
 			$instance->width = (int)$data->width;
 		}
 		if (isset($data->height)) {
 			$instance->height = (int)$data->height;
+		}
+		if (isset($data->windowState)) {
+			$instance->windowState = (string)$data->windowState;
 		}
 		if (isset($data->browserContextId)) {
 			$instance->browserContextId = (string)$data->browserContextId;
@@ -109,11 +139,20 @@ final class CreateTargetRequest implements \JsonSerializable
 		if ($this->url !== null) {
 			$data->url = $this->url;
 		}
+		if ($this->left !== null) {
+			$data->left = $this->left;
+		}
+		if ($this->top !== null) {
+			$data->top = $this->top;
+		}
 		if ($this->width !== null) {
 			$data->width = $this->width;
 		}
 		if ($this->height !== null) {
 			$data->height = $this->height;
+		}
+		if ($this->windowState !== null) {
+			$data->windowState = $this->windowState;
 		}
 		if ($this->browserContextId !== null) {
 			$data->browserContextId = $this->browserContextId;
