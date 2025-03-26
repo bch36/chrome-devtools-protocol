@@ -5,8 +5,12 @@ namespace ChromeDevtoolsProtocol\Domain;
 use ChromeDevtoolsProtocol\ContextInterface;
 use ChromeDevtoolsProtocol\InternalClientInterface;
 use ChromeDevtoolsProtocol\Model\BluetoothEmulation\EnableRequest;
+use ChromeDevtoolsProtocol\Model\BluetoothEmulation\GattOperationReceivedEvent;
+use ChromeDevtoolsProtocol\Model\BluetoothEmulation\SetSimulatedCentralStateRequest;
 use ChromeDevtoolsProtocol\Model\BluetoothEmulation\SimulateAdvertisementRequest;
+use ChromeDevtoolsProtocol\Model\BluetoothEmulation\SimulateGATTOperationResponseRequest;
 use ChromeDevtoolsProtocol\Model\BluetoothEmulation\SimulatePreconnectedPeripheralRequest;
+use ChromeDevtoolsProtocol\SubscriptionInterface;
 
 class BluetoothEmulationDomain implements BluetoothEmulationDomainInterface
 {
@@ -33,9 +37,23 @@ class BluetoothEmulationDomain implements BluetoothEmulationDomainInterface
 	}
 
 
+	public function setSimulatedCentralState(ContextInterface $ctx, SetSimulatedCentralStateRequest $request): void
+	{
+		$this->internalClient->executeCommand($ctx, 'BluetoothEmulation.setSimulatedCentralState', $request);
+	}
+
+
 	public function simulateAdvertisement(ContextInterface $ctx, SimulateAdvertisementRequest $request): void
 	{
 		$this->internalClient->executeCommand($ctx, 'BluetoothEmulation.simulateAdvertisement', $request);
+	}
+
+
+	public function simulateGATTOperationResponse(
+		ContextInterface $ctx,
+		SimulateGATTOperationResponseRequest $request
+	): void {
+		$this->internalClient->executeCommand($ctx, 'BluetoothEmulation.simulateGATTOperationResponse', $request);
 	}
 
 
@@ -44,5 +62,19 @@ class BluetoothEmulationDomain implements BluetoothEmulationDomainInterface
 		SimulatePreconnectedPeripheralRequest $request
 	): void {
 		$this->internalClient->executeCommand($ctx, 'BluetoothEmulation.simulatePreconnectedPeripheral', $request);
+	}
+
+
+	public function addGattOperationReceivedListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('BluetoothEmulation.gattOperationReceived', function ($event) use ($listener) {
+			return $listener(GattOperationReceivedEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitGattOperationReceived(ContextInterface $ctx): GattOperationReceivedEvent
+	{
+		return GattOperationReceivedEvent::fromJson($this->internalClient->awaitEvent($ctx, 'BluetoothEmulation.gattOperationReceived'));
 	}
 }

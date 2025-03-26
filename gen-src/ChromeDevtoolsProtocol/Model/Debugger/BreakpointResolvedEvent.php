@@ -3,7 +3,7 @@
 namespace ChromeDevtoolsProtocol\Model\Debugger;
 
 /**
- * Fired when breakpoint is resolved to an actual script and location.
+ * Fired when breakpoint is resolved to an actual script and location. Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event.
  *
  * @generated This file has been auto-generated, do not edit.
  *

@@ -17,6 +17,7 @@ final class PrefetchStatusEnum
 	public const PREFETCH_FAILED_M_I_M_E_NOT_SUPPORTED = 'PrefetchFailedMIMENotSupported';
 	public const PREFETCH_FAILED_NET_ERROR = 'PrefetchFailedNetError';
 	public const PREFETCH_FAILED_NON2_X_X = 'PrefetchFailedNon2XX';
+	public const PREFETCH_EVICTED_AFTER_BROWSING_DATA_REMOVED = 'PrefetchEvictedAfterBrowsingDataRemoved';
 	public const PREFETCH_EVICTED_AFTER_CANDIDATE_REMOVED = 'PrefetchEvictedAfterCandidateRemoved';
 	public const PREFETCH_EVICTED_FOR_NEWER_PREFETCH = 'PrefetchEvictedForNewerPrefetch';
 	public const PREFETCH_HELDBACK = 'PrefetchHeldback';
@@ -32,6 +33,9 @@ final class PrefetchStatusEnum
 	public const PREFETCH_NOT_ELIGIBLE_SCHEME_IS_NOT_HTTPS = 'PrefetchNotEligibleSchemeIsNotHttps';
 	public const PREFETCH_NOT_ELIGIBLE_USER_HAS_COOKIES = 'PrefetchNotEligibleUserHasCookies';
 	public const PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER = 'PrefetchNotEligibleUserHasServiceWorker';
+	public const PREFETCH_NOT_ELIGIBLE_USER_HAS_SERVICE_WORKER_NO_FETCH_HANDLER = 'PrefetchNotEligibleUserHasServiceWorkerNoFetchHandler';
+	public const PREFETCH_NOT_ELIGIBLE_REDIRECT_FROM_SERVICE_WORKER = 'PrefetchNotEligibleRedirectFromServiceWorker';
+	public const PREFETCH_NOT_ELIGIBLE_REDIRECT_TO_SERVICE_WORKER = 'PrefetchNotEligibleRedirectToServiceWorker';
 	public const PREFETCH_NOT_ELIGIBLE_BATTERY_SAVER_ENABLED = 'PrefetchNotEligibleBatterySaverEnabled';
 	public const PREFETCH_NOT_ELIGIBLE_PRELOADING_DISABLED = 'PrefetchNotEligiblePreloadingDisabled';
 	public const PREFETCH_NOT_FINISHED_IN_TIME = 'PrefetchNotFinishedInTime';

@@ -12,6 +12,7 @@ use ChromeDevtoolsProtocol\Exception\BuilderException;
 final class EnableRequestBuilder
 {
 	private $state;
+	private $leSupported;
 
 
 	/**
@@ -24,6 +25,10 @@ final class EnableRequestBuilder
 			throw new BuilderException('Property [state] is required.');
 		}
 		$instance->state = $this->state;
+		if ($this->leSupported === null) {
+			throw new BuilderException('Property [leSupported] is required.');
+		}
+		$instance->leSupported = $this->leSupported;
 		return $instance;
 	}
 
@@ -36,6 +41,18 @@ final class EnableRequestBuilder
 	public function setState($state): self
 	{
 		$this->state = $state;
+		return $this;
+	}
+
+
+	/**
+	 * @param bool $leSupported
+	 *
+	 * @return self
+	 */
+	public function setLeSupported($leSupported): self
+	{
+		$this->leSupported = $leSupported;
 		return $this;
 	}
 }

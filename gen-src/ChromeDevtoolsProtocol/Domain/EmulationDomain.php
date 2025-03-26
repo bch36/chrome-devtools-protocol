@@ -14,6 +14,7 @@ use ChromeDevtoolsProtocol\Model\Emulation\SetDefaultBackgroundColorOverrideRequ
 use ChromeDevtoolsProtocol\Model\Emulation\SetDeviceMetricsOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetDevicePostureOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetDisabledImageTypesRequest;
+use ChromeDevtoolsProtocol\Model\Emulation\SetDisplayFeaturesOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetDocumentCookieDisabledRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetEmitTouchEventsForMouseRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetEmulatedMediaRequest;
@@ -27,6 +28,7 @@ use ChromeDevtoolsProtocol\Model\Emulation\SetNavigatorOverridesRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetPageScaleFactorRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetPressureSourceOverrideEnabledRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetPressureStateOverrideRequest;
+use ChromeDevtoolsProtocol\Model\Emulation\SetSafeAreaInsetsOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetScriptExecutionDisabledRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetScrollbarsHiddenRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetSensorOverrideEnabledRequest;
@@ -71,6 +73,13 @@ class EmulationDomain implements EmulationDomainInterface
 	{
 		$request = new \stdClass();
 		$this->internalClient->executeCommand($ctx, 'Emulation.clearDevicePostureOverride', $request);
+	}
+
+
+	public function clearDisplayFeaturesOverride(ContextInterface $ctx): void
+	{
+		$request = new \stdClass();
+		$this->internalClient->executeCommand($ctx, 'Emulation.clearDisplayFeaturesOverride', $request);
 	}
 
 
@@ -145,6 +154,12 @@ class EmulationDomain implements EmulationDomainInterface
 	public function setDisabledImageTypes(ContextInterface $ctx, SetDisabledImageTypesRequest $request): void
 	{
 		$this->internalClient->executeCommand($ctx, 'Emulation.setDisabledImageTypes', $request);
+	}
+
+
+	public function setDisplayFeaturesOverride(ContextInterface $ctx, SetDisplayFeaturesOverrideRequest $request): void
+	{
+		$this->internalClient->executeCommand($ctx, 'Emulation.setDisplayFeaturesOverride', $request);
 	}
 
 
@@ -227,6 +242,12 @@ class EmulationDomain implements EmulationDomainInterface
 	public function setPressureStateOverride(ContextInterface $ctx, SetPressureStateOverrideRequest $request): void
 	{
 		$this->internalClient->executeCommand($ctx, 'Emulation.setPressureStateOverride', $request);
+	}
+
+
+	public function setSafeAreaInsetsOverride(ContextInterface $ctx, SetSafeAreaInsetsOverrideRequest $request): void
+	{
+		$this->internalClient->executeCommand($ctx, 'Emulation.setSafeAreaInsetsOverride', $request);
 	}
 
 

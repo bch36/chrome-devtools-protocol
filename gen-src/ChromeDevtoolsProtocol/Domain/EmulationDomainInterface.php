@@ -13,6 +13,7 @@ use ChromeDevtoolsProtocol\Model\Emulation\SetDefaultBackgroundColorOverrideRequ
 use ChromeDevtoolsProtocol\Model\Emulation\SetDeviceMetricsOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetDevicePostureOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetDisabledImageTypesRequest;
+use ChromeDevtoolsProtocol\Model\Emulation\SetDisplayFeaturesOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetDocumentCookieDisabledRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetEmitTouchEventsForMouseRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetEmulatedMediaRequest;
@@ -26,6 +27,7 @@ use ChromeDevtoolsProtocol\Model\Emulation\SetNavigatorOverridesRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetPageScaleFactorRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetPressureSourceOverrideEnabledRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetPressureStateOverrideRequest;
+use ChromeDevtoolsProtocol\Model\Emulation\SetSafeAreaInsetsOverrideRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetScriptExecutionDisabledRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetScrollbarsHiddenRequest;
 use ChromeDevtoolsProtocol\Model\Emulation\SetSensorOverrideEnabledRequest;
@@ -76,6 +78,16 @@ interface EmulationDomainInterface
 	 * @return void
 	 */
 	public function clearDevicePostureOverride(ContextInterface $ctx): void;
+
+
+	/**
+	 * Clears the display features override set with either setDeviceMetricsOverride() or setDisplayFeaturesOverride() and starts using display features from the platform again. Does nothing if no override is set.
+	 *
+	 * @param ContextInterface $ctx
+	 *
+	 * @return void
+	 */
+	public function clearDisplayFeaturesOverride(ContextInterface $ctx): void;
 
 
 	/**
@@ -200,6 +212,17 @@ interface EmulationDomainInterface
 	 * @return void
 	 */
 	public function setDisabledImageTypes(ContextInterface $ctx, SetDisabledImageTypesRequest $request): void;
+
+
+	/**
+	 * Start using the given display features to pupulate the Viewport Segments API. This override can also be set in setDeviceMetricsOverride().
+	 *
+	 * @param ContextInterface $ctx
+	 * @param SetDisplayFeaturesOverrideRequest $request
+	 *
+	 * @return void
+	 */
+	public function setDisplayFeaturesOverride(ContextInterface $ctx, SetDisplayFeaturesOverrideRequest $request): void;
 
 
 	/**
@@ -349,6 +372,17 @@ interface EmulationDomainInterface
 	 * @return void
 	 */
 	public function setPressureStateOverride(ContextInterface $ctx, SetPressureStateOverrideRequest $request): void;
+
+
+	/**
+	 * Overrides the values for env(safe-area-inset-*) and env(safe-area-max-inset-*). Unset values will cause the respective variables to be undefined, even if previously overridden.
+	 *
+	 * @param ContextInterface $ctx
+	 * @param SetSafeAreaInsetsOverrideRequest $request
+	 *
+	 * @return void
+	 */
+	public function setSafeAreaInsetsOverride(ContextInterface $ctx, SetSafeAreaInsetsOverrideRequest $request): void;
 
 
 	/**

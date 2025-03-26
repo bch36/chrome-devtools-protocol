@@ -18,6 +18,13 @@ final class EnableRequest implements \JsonSerializable
 	 */
 	public $state;
 
+	/**
+	 * If the simulated central supports low-energy.
+	 *
+	 * @var bool
+	 */
+	public $leSupported;
+
 
 	/**
 	 * @param object $data
@@ -29,6 +36,9 @@ final class EnableRequest implements \JsonSerializable
 		if (isset($data->state)) {
 			$instance->state = (string)$data->state;
 		}
+		if (isset($data->leSupported)) {
+			$instance->leSupported = (bool)$data->leSupported;
+		}
 		return $instance;
 	}
 
@@ -38,6 +48,9 @@ final class EnableRequest implements \JsonSerializable
 		$data = new \stdClass();
 		if ($this->state !== null) {
 			$data->state = $this->state;
+		}
+		if ($this->leSupported !== null) {
+			$data->leSupported = $this->leSupported;
 		}
 		return $data;
 	}

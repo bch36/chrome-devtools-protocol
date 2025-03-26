@@ -22,6 +22,7 @@ use ChromeDevtoolsProtocol\Model\Page\DocumentOpenedEvent;
 use ChromeDevtoolsProtocol\Model\Page\DomContentEventFiredEvent;
 use ChromeDevtoolsProtocol\Model\Page\DownloadProgressEvent;
 use ChromeDevtoolsProtocol\Model\Page\DownloadWillBeginEvent;
+use ChromeDevtoolsProtocol\Model\Page\EnableRequest;
 use ChromeDevtoolsProtocol\Model\Page\FileChooserOpenedEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameAttachedEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameClearedScheduledNavigationEvent;
@@ -31,6 +32,7 @@ use ChromeDevtoolsProtocol\Model\Page\FrameRequestedNavigationEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameResizedEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameScheduledNavigationEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameStartedLoadingEvent;
+use ChromeDevtoolsProtocol\Model\Page\FrameStartedNavigatingEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameStoppedLoadingEvent;
 use ChromeDevtoolsProtocol\Model\Page\FrameSubtreeWillBeDetachedEvent;
 use ChromeDevtoolsProtocol\Model\Page\GenerateTestReportRequest;
@@ -214,9 +216,8 @@ class PageDomain implements PageDomainInterface
 	}
 
 
-	public function enable(ContextInterface $ctx): void
+	public function enable(ContextInterface $ctx, EnableRequest $request): void
 	{
-		$request = new \stdClass();
 		$this->internalClient->executeCommand($ctx, 'Page.enable', $request);
 	}
 
@@ -726,6 +727,20 @@ class PageDomain implements PageDomainInterface
 	public function awaitFrameStartedLoading(ContextInterface $ctx): FrameStartedLoadingEvent
 	{
 		return FrameStartedLoadingEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Page.frameStartedLoading'));
+	}
+
+
+	public function addFrameStartedNavigatingListener(callable $listener): SubscriptionInterface
+	{
+		return $this->internalClient->addListener('Page.frameStartedNavigating', function ($event) use ($listener) {
+			return $listener(FrameStartedNavigatingEvent::fromJson($event));
+		});
+	}
+
+
+	public function awaitFrameStartedNavigating(ContextInterface $ctx): FrameStartedNavigatingEvent
+	{
+		return FrameStartedNavigatingEvent::fromJson($this->internalClient->awaitEvent($ctx, 'Page.frameStartedNavigating'));
 	}
 
 
