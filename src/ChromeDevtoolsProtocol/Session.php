@@ -54,6 +54,7 @@ class Session implements DevtoolsClientInterface, InternalClientInterface
 	{
 		$ctx = Context::withTimeout(Context::background(), 10);
 
+		/* bch36: Without the try/catch block, if one of the calls to $this->browser->target() throws an exception, we never get the line that closes $this->browser. Then, when the browser object (DevtoolsClient) is destructed when the script completes, an exception is thrown from the destructor in DevtoolsClient, with no way to catch it. Exception: "Fatal error: Uncaught ChromeDevtoolsProtocol\Exception\LogicException: You must call [ChromeDevtoolsProtocol\DevtoolsClient::close] method to release underlying WebSocket connection." */
 		try
 		{
 			$this->browser->target()->closeTarget(
@@ -68,6 +69,8 @@ class Session implements DevtoolsClientInterface, InternalClientInterface
 					->setBrowserContextId($this->browserContextId)
 					->build()
 			);
+
+			$this->browser->close();
 		} catch (\Exception $e) {
 			$this->browser->close();
 
